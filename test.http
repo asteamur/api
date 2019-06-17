@@ -1,0 +1,29 @@
+@token=Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoidGVzdCIsInBlcm1pc3Npb25zIjpbImZvb2Q6cmVhZCIsImZvb2Q6d3JpdGUiXSwiaWF0IjoxNTYwMzUwNzk4fQ.jdGm4chwONQElzQKVmkqUTsvqrctiTzVRbAIbXcvxKU
+
+###
+POST http://localhost:3000/api/auth/food/type/pera HTTP/1.1
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "a": 123
+}
+
+###
+
+###
+POST http://localhost:3000/api/auth/food/pera HTTP/1.1
+content-type: application/json
+Authorization: {{token}}
+
+{
+  "a_date": {
+    "_day": 1,
+    "_month": 1,
+    "_year": 2000
+  }
+}
+
+###
+GET http://localhost:3000/api/test HTTP/1.1
+content-type: application/json
