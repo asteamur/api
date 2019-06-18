@@ -1,5 +1,6 @@
 @token=Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoidGVzdCIsInBlcm1pc3Npb25zIjpbImZvb2Q6cmVhZCIsImZvb2Q6d3JpdGUiXSwiaWF0IjoxNTYwMzUwNzk4fQ.jdGm4chwONQElzQKVmkqUTsvqrctiTzVRbAIbXcvxKU
-
+@url=localhost
+#@url=62.4.16.3
 ###
 POST http://localhost:3000/api/auth/food/type/pera HTTP/1.1
 content-type: application/json
