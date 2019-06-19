@@ -1,13 +1,16 @@
-@token=Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoidGVzdCIsInBlcm1pc3Npb25zIjpbImZvb2Q6cmVhZCIsImZvb2Q6d3JpdGUiXSwiaWF0IjoxNTYwMzUwNzk4fQ.jdGm4chwONQElzQKVmkqUTsvqrctiTzVRbAIbXcvxKU
+@token=Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoidGVzdCIsInBlcm1pc3Npb25zIjpbImZvb2Q6cmVhZCIsImRhdGFzaGVldDp3cml0ZSJdLCJpYXQiOjE1NjA4Njk4MjR9.27ALsGzac51FEcgamKuSj6x6yFs8THTGw2lLEEQDD-A
 @url=localhost
 #@url=62.4.16.3
 ###
-POST http://localhost:3000/api/auth/food/type/pera HTTP/1.1
+POST http://localhost:3000/api/auth/form/datasheet HTTP/1.1
 content-type: application/json
 Authorization: {{token}}
 
 {
-  "a": 123
+  "type": "datasheet",
+  "father": {
+    "name": "p"
+  }
 }
 
 ###

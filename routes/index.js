@@ -11,7 +11,17 @@ const validator = new Validator({allErrors: true, coerceTypes: true })
 
 const router = express.Router()
 
-router.post('/type/:name', validator.validate({body: {
+router.post('/type/:name', validator.validate(
+{
+params: {
+    type: 'object',
+    properties: {
+        name: {
+            type: 'string'
+        }
+    },
+    required: ['name'] 
+},body: {
     type: 'object',
     properties: {
         a: {

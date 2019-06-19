@@ -10,8 +10,8 @@ const client = new MongoClient(url);
 
 describe('test demo', () => {
   // eslint-disable-next-line no-underscore-dangle
-  let _id = null;
-
+  let _id = new ObjectID();
+  /*
   beforeAll(async () => {
     await client.connect();
     db = client.db(dbName);
@@ -31,12 +31,46 @@ describe('test demo', () => {
   afterEach(async () => {
     await db.collection('test').deleteMany({ });
   });
+  */
 
-  test('test simple', async () => {
-    expect.assertions(1);
-    const response = await axios.get('http://api:3000/api/test') //,      
-    expect(response.data).toEqual(
-      {a: 1}
-    );
+  beforeAll(async () => {
+    await client.connect();
+    db = client.db(dbName);
+    //_id = new ObjectID();
+    await db.collection('users').insertOne({
+      _id, name: 'miguel'
+    });
+  });
+
+  afterAll(async () => {
+    await db.collection('users').deleteMany({ });
+    await client.close();
+  });
+
+  test('patch form datasheet', async () => {
+    expect.assertions(2)
+    // eslint-disable-next-line no-underscore-dangle
+    //const _id = new ObjectID()
+    const response = await axios.patch(
+      'http://api:3000/api/auth/user/datasheet/' + _id,
+      {
+        type: "datasheet",
+        father: {
+          name: 'diego'
+        }
+      },{
+        headers: {
+          Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoidGVzdCIsInBlcm1pc3Npb25zIjpbInVzZXIvZGF0YXNoZWV0OndyaXRlIl0sImlhdCI6MTU2MDg5OTQ2OX0.6GjryHG11aUxfZP7rjSUk4pswfILEC9RcPvOVO-ymWI"
+        }
+      }
+      )      
+    expect(response.status).toEqual(204);
+    const doc = await db.collection('users').findOne({_id})
+    expect(doc).toEqual({_id, name: 'miguel', datasheet: {
+      type: "datasheet",
+      father: {
+        name: 'diego'
+      }
+    }})
   });
 });

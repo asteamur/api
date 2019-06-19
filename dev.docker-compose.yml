@@ -13,7 +13,7 @@ services:
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
-    command: nodemon index.js 
+    command: nodemon index.js --ignore __tests__/*.js
   db:
     image: mongo
     ports:
