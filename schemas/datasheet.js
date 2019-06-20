@@ -1,5 +1,5 @@
 const datasheetSchema = {
-    "$schema": "http://json-schema.org/draft-07/schema#",
+    //"$schema": "http://json-schema.org/draft-07/schema#",
     title: "Ficha de datos de asociado",
     type: "object",
     definitions:{

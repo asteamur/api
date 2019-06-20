@@ -1,3 +1,4 @@
+const schema = require('../schemas/datasheet');
 const { MongoClient, ObjectID } = require('mongodb');
 const axios = require('axios');
 axios.defaults.adapter = require('axios/lib/adapters/http');
@@ -40,10 +41,15 @@ describe('test demo', () => {
     await db.collection('users').insertOne({
       _id, name: 'miguel'
     });
+    await db.collection('JSONSchemas').insertOne({
+      name: 'datasheet',
+      schema
+    })
   });
 
   afterAll(async () => {
     await db.collection('users').deleteMany({ });
+    await db.collection('JSONSchemas').deleteMany({});
     await client.close();
   });
 
@@ -73,4 +79,51 @@ describe('test demo', () => {
       }
     }})
   });
+
+  test('patch datasheet error invalid token', async () => {
+    expect.assertions(2)
+    try{
+      const response = await axios.patch(
+        'http://api:3000/api/auth/user/datasheet/' + _id,
+        {
+          type: "datasheet",
+          father: {
+            name: 'diego'
+          }
+        },{
+          headers: {
+            Authorization: "Bearer yJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoidGVzdCIsInBlcm1pc3Npb25zIjpbInVzZXIvZGF0YXNoZWV0OndyaXRlIl0sImlhdCI6MTU2MDg5OTQ2OX0.6GjryHG11aUxfZP7rjSUk4pswfILEC9RcPvOVO-ymWI"
+          }
+        }
+      )      
+    }
+    catch(err){
+      expect(err.response.status).toEqual(401);
+      expect(err.response.data).toEqual({error: 'Invalid token'});
+    }
+  });
+
+  test('patch datasheet error forbidden', async () => {
+    expect.assertions(2)
+    try{
+      const response = await axios.patch(
+        'http://api:3000/api/auth/user/datasheet/' + _id,
+        {
+          type: "datasheet",
+          father: {
+            name: 'diego'
+          }
+        },{
+          headers: {
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoidGVzdCIsInBlcm1pc3Npb25zIjpbInVzZXIvZGF0YXNoZWV0OndyaXRleCJdLCJpYXQiOjE1NjA5NDM2Njl9.552Xb4Z5T9rGlPJwh0Qxv-ZhVK4BOH1L8YRtGsCmgxc"
+          }
+        }
+      )      
+    }
+    catch(err){
+      expect(err.response.status).toEqual(403);
+      expect(err.response.data).toEqual({error: 'Forbidden'});
+    }
+  });
+
 });

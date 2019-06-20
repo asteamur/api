@@ -10,7 +10,25 @@ const validator = new Validator({allErrors: true, coerceTypes: true })
 
 const router = Router()
 
-router.patch('/datasheet/:_id', validator.validate(
+function getSchema(req) {
+    return req.schema
+}
+
+function loadSchema(req, res, next) {
+    req.db.collection('JSONSchemas').findOne({name: 'datasheet'})
+    .then((doc) => {
+        req.schema = doc
+        next()
+    })
+    .catch(next)
+    /*new Promise(resolve => setTimeout(resolve, 2000)).then((schema) => {
+        req.schema = datasheetSchema;
+        next();
+    }).catch(next);
+    */
+}
+
+router.patch('/datasheet/:_id', loadSchema, validator.validate(
 {
 params: {
     type: 'object',
@@ -21,7 +39,7 @@ params: {
     },
     required: ['_id'] 
 },
-body: datasheetSchema
+body: getSchema //datasheetSchema
 }), guard.check(['user/datasheet:write']), asyncHandler(async function(req, res) {
     const resp = await req.db.collection('users').updateOne({_id: new ObjectID(req.params._id)}, {$set: {datasheet: req.body}})
     patched(res) 

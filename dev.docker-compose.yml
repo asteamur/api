@@ -6,6 +6,7 @@ services:
       dockerfile: dev.Dockerfile
     environment:
     - DB_URI=mongodb://db:27017/test
+    - SECRET=secret
     depends_on:
       - db
     ports:
